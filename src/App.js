@@ -1,10 +1,14 @@
+import {Route, Routes} from 'react-router-dom';
 
-import CategoriesMenu from './components/categories-menu/categories-menu.component';
+import Home from './components/routes/home/home.component';
 
 const App= () => {
 
   return (
-    <CategoriesMenu />
+    <Routes>
+      <Route path='/home' element={<Home/>}/>
+      
+    </Routes>
   );
   
 };
