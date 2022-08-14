@@ -36,6 +36,22 @@ provider.setCustomParameters({
   export const creatUserDocumentFromAuth = async (userAuth) =>{
     const userDocRef = doc(db, 'users', userAuth.uid);
 
-    console.log(userDocRef);
     const userSnapshot = await getDoc(userDocRef);
+    
+    if(!userSnapshot.exists()){
+      const {displayName, email} = userAuth;
+      const ceatedAt = new Date();
+
+      try{
+        await setDoc(userDocRef,{
+          displayName,
+          email,
+          ceatedAt,
+        });
+      }catch(error){
+        console.log('error creating the user', error.message);
+      }
+    }
+
+    return userDocRef;
   }
