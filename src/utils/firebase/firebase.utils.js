@@ -35,7 +35,8 @@ provider.setCustomParameters({
   export const singInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
   export const db = getFirestore();
 
-  export const creatUserDocumentFromAuth = async (userAuth) =>{
+  export const creatUserDocumentFromAuth = async (userAuth, additionnalInformation = {}) =>{
+    if(!userAuth) return;
     const userDocRef = doc(db, 'users', userAuth.uid);
 
     const userSnapshot = await getDoc(userDocRef);
@@ -49,6 +50,7 @@ provider.setCustomParameters({
           displayName,
           email,
           ceatedAt,
+          ...additionnalInformation,
         });
       }catch(error){
         console.log('error creating the user', error.message);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
+import { createAuthUserWithEmailAndPassword, creatUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
     displayName: '',
@@ -12,6 +12,26 @@ const SignUp = () =>{
     const [formFields, setFormFields] = useState(defaultFormFields);
     const {displayName, email, password, confirmPassword} = formFields;
 
+    const resetFormField = () =>{
+        setFormFields(defaultFormFields);
+    }
+
+    const handleSunmit = async (event) =>{
+        event.preventDefault();
+        if (password != confirmPassword){
+            alert("wrong password")
+            return;
+        }
+        try{
+            const {user}= await createAuthUserWithEmailAndPassword(email, password);
+            await creatUserDocumentFromAuth(user, {displayName});
+            resetFormField();
+        }catch(error){
+           console.error(error);
+        }
+        
+    }
+
     const handleChange = (event) =>{
         const {name, value} = event.target;
 
@@ -21,7 +41,7 @@ const SignUp = () =>{
     return(
         <div>
             <h1>Sign up with you email and password</h1>
-            <form onSubmit={()=>{}}>
+            <form onSubmit={handleSunmit}>
                 <label>Dispalay name</label>
                 <input required type='text' onChange={handleChange} name='displayName' value={displayName}/>
 
@@ -32,7 +52,7 @@ const SignUp = () =>{
                 <input required type="password" onChange={handleChange}  name='password'  value={password}/>
 
                 <label>Confirm Password</label>
-                <input required type='password' onChange={handleChange}  name='confirm password' value={confirmPassword}/>
+                <input required type='password' onChange={handleChange}  name='confirmPassword' value={confirmPassword}/>
                 <button type='submit'>Sign up</button>
             </form>
         </div>
