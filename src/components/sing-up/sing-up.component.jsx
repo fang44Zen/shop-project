@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createAuthUserWithEmailAndPassword, creatUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import './sign-up.styles.scss';
 
@@ -20,7 +21,7 @@ const SignUp = () =>{
 
     const handleSunmit = async (event) =>{
         event.preventDefault();
-        if (password != confirmPassword){
+        if (password !== confirmPassword){
             alert("wrong password")
             return;
         }
@@ -50,7 +51,7 @@ const SignUp = () =>{
                 <FormInput label='Email' required type="email" onChange={handleChange}  name='email' value={email}/>
                 <FormInput label="Password" required type="password" onChange={handleChange}  name='password'  value={password}/>
                 <FormInput label="Confirm Password" required type='password' onChange={handleChange}  name='confirmPassword' value={confirmPassword}/>
-                <button type='submit'>Sign up</button>
+                <Button type='submit'>Sign Up</Button>
             </form>
         </div>
        
