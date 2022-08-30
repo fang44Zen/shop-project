@@ -26,7 +26,6 @@ const SignIn = () =>{
         <div>
             <h1>Sign In page</h1>
             <button onClick={logGoogleUser}>Sign in with Google</button>
-            <button onClick={singInWithGoogleRedirect}>Sign in with Google Redirect</button>
             <SignUp />
         </div>
     )
