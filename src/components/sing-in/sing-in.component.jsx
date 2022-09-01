@@ -13,7 +13,7 @@ const defaultFormFields = {
 
 const SignIn = () =>{
     const [formFields, setFormFields] = useState(defaultFormFields);
-    const {displayName, email, password, confirmPassword} = formFields;
+    const {email, password} = formFields;
 
     const resetFormField = () =>{
         setFormFields(defaultFormFields);
@@ -21,14 +21,9 @@ const SignIn = () =>{
 
     const handleSunmit = async (event) =>{
         event.preventDefault();
-        if (password !== confirmPassword){
-            alert("wrong password")
-            return;
-        }
+       
         try{
-            const {user}= await createAuthUserWithEmailAndPassword(email, password);
-            await creatUserDocumentFromAuth(user, {displayName});
-            resetFormField();
+            
         }catch(error){
            console.error(error);
         }
@@ -43,15 +38,13 @@ const SignIn = () =>{
 
     return(
         <div className="sign-up-container">
-            <h2>Don't have an account?</h2>
-            <span>Sign up with you email and password</span>
+            <h2>Already have an account?</h2>
+            <span>Sign in with you email and password</span>
             <form onSubmit={handleSunmit}>
                 
-                <FormInput label='Dispalay name' required type='text' onChange={handleChange} name='displayName' value={displayName}/>
                 <FormInput label='Email' required type="email" onChange={handleChange}  name='email' value={email}/>
                 <FormInput label="Password" required type="password" onChange={handleChange}  name='password'  value={password}/>
-                <FormInput label="Confirm Password" required type='password' onChange={handleChange}  name='confirmPassword' value={confirmPassword}/>
-                <Button type='submit'>Sign Up</Button>
+                <Button type='submit'>Sign In</Button>
             </form>
         </div>
        
