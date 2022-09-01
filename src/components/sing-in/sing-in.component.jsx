@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { createAuthUserWithEmailAndPassword, creatUserDocumentFromAuth } from "../../utils/firebase/firebase.utils";
+import {  creatUserDocumentFromAuth, 
+    signInWithGooglePopup, 
+    signInAuthUserWithEmailAndPassword, } from "../../utils/firebase/firebase.utils";
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import './sign-in.styles.scss';
@@ -17,15 +19,32 @@ const SignIn = () =>{
 
     const resetFormField = () =>{
         setFormFields(defaultFormFields);
-    }
+    };
+
+    const signInWithGoogle = async () =>{
+        const {user} = await signInWithGooglePopup();
+        await creatUserDocumentFromAuth(user);
+    };
 
     const handleSunmit = async (event) =>{
         event.preventDefault();
        
         try{
-            
+            const response = await signInAuthUserWithEmailAndPassword(email, password);
+            console.log(response); 
+            resetFormField();
         }catch(error){
-           console.error(error);
+            switch(error.code){
+                case 'auth/user-not-found':
+                    alert('unknow user'); 
+                    break
+                case 'auth/wrong-password':
+                    alert("wrong password");
+                    break
+                default:
+                    console.error(error);
+            }
+           
         }
         
     }
@@ -44,7 +63,11 @@ const SignIn = () =>{
                 
                 <FormInput label='Email' required type="email" onChange={handleChange}  name='email' value={email}/>
                 <FormInput label="Password" required type="password" onChange={handleChange}  name='password'  value={password}/>
-                <Button type='submit'>Sign In</Button>
+                <div className="buttons-container">
+                    <Button type='submit'>Sign In</Button>
+                    <Button type="button" buttonType="google" onClick={signInWithGoogle}>Google sign in</Button>
+                </div>
+                
             </form>
         </div>
        
