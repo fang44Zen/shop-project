@@ -1,5 +1,5 @@
 import './products-card.styles.scss';
-import '../button/button.component';
+
 import Button from '../button/button.component';
 
 
